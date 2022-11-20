@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Text;
 
 namespace InformatikaLab
@@ -9,7 +10,6 @@ namespace InformatikaLab
         {
             Menu();
             ConsoleKey choose = Console.ReadKey().Key;
-
             switch (choose)
             {
                 case ConsoleKey.D1:
@@ -26,16 +26,19 @@ namespace InformatikaLab
                     Console.Clear();
                     F3.function3();
                     break;
+
                 case ConsoleKey.D4:
                     Console.Clear();
                     F4.function4();
                     break;
+
                 case ConsoleKey.D5:
                     Console.Clear();
                     F5.function5();
                     break;
             }
         }
+
         public static void Menu()
         {
             Console.WriteLine("Выберите функцию калькулятора, указав цифру");
@@ -65,7 +68,7 @@ namespace InformatikaLab
             if (baze > 50)
                 throw new ArgumentException("Основание должно быть от 1 до 50");
             int output = 0;
-            int digitsCount = number.Length;
+            int numCount = number.Length;
 
             if (baze == 1)
             {
@@ -81,13 +84,16 @@ namespace InformatikaLab
             }
 
             int num;
-            for (int i = 0; i < digitsCount; i++)
+            for (int i = 0; i < numCount; i++)
             {
 
                 char symbol = number[i];
-                if (symbol >= '0' && symbol <= '9') num = symbol - '0';
-                else if (symbol >= 'A' && symbol <= 'Z') num = symbol - 'A' + 10;
-                else if (symbol >= 'a' && symbol <= 'z') num = symbol - 'a' + (('Z' - 'A') + 1) + 10;
+                if 
+                    (symbol >= '0' && symbol <= '9') num = symbol - '0';
+                else if 
+                    (symbol >= 'A' && symbol <= 'Z') num = symbol - 'A' + 10;
+                else if 
+                    (symbol >= 'a' && symbol <= 'z') num = symbol - 'a' + (('Z' - 'A') + 1) + 10;
                 else
                     throw new ArgumentException("Число некорректно");
                 output *= baze;
@@ -99,8 +105,6 @@ namespace InformatikaLab
         public static string FromDecToAny(int number, int baze)
         {
 
-            if (baze > 50)
-                throw new ArgumentException("Основание неверно, должно быть от 1 до 50");
             StringBuilder builder = new StringBuilder();
 
             do
@@ -130,39 +134,42 @@ namespace InformatikaLab
             int toBaze = int.Parse(Console.ReadLine());
             int toDec = FromAnyToDec(number, numBaze);
             Console.WriteLine("Ответ: " + FromDecToAny(toDec, toBaze));
+            Console.ReadKey();
         }
     }
 
     public static class F2
-    {
+    {     
+        public static string ToRom(int number)
+        {
+            int[] nums = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+            string[] rom = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+
+            StringBuilder result = new StringBuilder();
+            int i = 0;
+            while(i < nums.Length && number != 0)
+            {
+                while (number >= nums[i])
+                {
+                    number -= nums[i];
+                    result.Append(rom[i]);
+                }
+            i++;
+            }
+            return result.ToString();
+        }
 
         public static void function2()
         {
-            int[] nums = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
-            string[] rim = { "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M" };
-
-            Console.Write("Введите число от 1 до 5000: ");
-            string input = Console.ReadLine();
-            int number;
-            if (!int.TryParse(input, out number) || !(number >= 1 && number <= 5000))
-                if (number > 5000)
-                    throw new ArgumentException("Число должно быть до 5000 включительно!");
-            int s = 0;
-            string output = "";
-            while (number > 0)
+            
+            Console.Write("Введите число: ");
+            if (int.TryParse(Console.ReadLine(), out int number))
             {
-                if (nums[s] <= number)
-                {
-                    number = number - nums[s];
-                    output = output + rim[s];
-                }
-                else s++;
-
-            }
-            Console.WriteLine("Ответ: " + output);
+                Console.Write("Ответ: " + ToRom(number) + "\n");
+                Console.ReadKey();
+            }                    
         }
     }
-
     public static class F3
     {
         public static void function3()
@@ -172,17 +179,15 @@ namespace InformatikaLab
                 Console.Write("Введите римское число: ");
                 input = Console.ReadLine();
                 int[] nums = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
-                string[] rim = { "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M" };
+                string[] rom = { "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M" };
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    bool isTrue = false;
                     int a = 0;
-                    while (a < rim.Length)
+                    while (a < rom.Length)
                     {
-                        if (input[i].ToString() == rim[a])
+                        if (input[i].ToString() == rom[a])
                         {
-                            isTrue = true;
                             break;
                         }
                         a++;
@@ -196,17 +201,19 @@ namespace InformatikaLab
                 {
                     if (RimtoNum[input[i]] < RimtoNum[input[i + 1]])
                     {
+                        Console.WriteLine("Число слева - " + RimtoNum[input[i]] + " меньше, чем число справа - " + RimtoNum[input[i + 1]] + ", поэтому левое число вычитается из правого");
                         result -= RimtoNum[input[i]];
                     }
+                        
                     else if (RimtoNum[input[i]] >= RimtoNum[input[i + 1]])
                     {
+                        Console.WriteLine("Число справа - " + RimtoNum[input[i + 1]] + " меньше, чем число слева - " +  RimtoNum[input[i]] + ", поэтому цифры складываются");
                         result += RimtoNum[input[i]];
                     }
                 }
                 result += RimtoNum[input[^1]];
-                
-
                 Console.WriteLine("Ответ: " + result);
+                Console.ReadKey();
             }
 
         }
@@ -221,22 +228,28 @@ namespace InformatikaLab
             Console.Write("Введите второе число: ");
             string number2 = Console.ReadLine();
             Console.Write("Введите систему счисления в которой будет происходить сложение (от 1 до 50): ");
+
             int baze = int.Parse(Console.ReadLine());
             int[] arr1 = new int[number1.Length];
             int[] arr2 = new int[number2.Length];
             int[] arr3 = new int[Math.Max(arr1.Length, arr2.Length)];
             char[] result = new char[Math.Max(arr1.Length, arr2.Length)];
             bool isTrue = true;
-            int newDigit = 1;
-            for (int i = 0; i < number1.Length; i++)
+            int newNum = 1;
+            int a = 0;
+            while (a < number1.Length)
             {
-                arr1[i] = ConvertToNumber(number1[i], baze);
+                arr1[a] = ConvertToNumber(number1[a], baze);
+                a++;
             }
 
-            for (int i = 0; i < number2.Length; i++)
+            int s = 0;
+            while (s < number2.Length)
             {
-                arr2[i] = ConvertToNumber(number2[i], baze);
+                arr2[s] = ConvertToNumber(number2[s], baze);
+                s++;
             }
+
             for (int i = 0; i < Math.Max(arr1.Length, arr2.Length); i++)
             {
                 if (arr1.Length - 1 - i >= 0 && arr2.Length - 1 - i >= 0)
@@ -260,31 +273,37 @@ namespace InformatikaLab
 
             }
 
-            for (int i = 0; i < arr3.Length; i++)
+            int m = 0;
+            while (m < arr3.Length)
             {
-                result[i] = ConvertToSymbol(arr3[i]);
+                result[m] = ConvertToSymbol(arr3[m]);
+                m++;
             }
 
             if (!isTrue)
             {
-                Console.WriteLine("Ответ: " + newDigit.ToString() + new string(result));
-                return newDigit.ToString() + new string(result);
+                Console.WriteLine("Ответ: " + newNum.ToString() + new string(result));
+                Console.ReadKey();
+                return newNum.ToString() + new string(result);
             }
+
             else
             {
                 Console.WriteLine("Ответ: " + new string(result));
+                Console.ReadKey();
                 return new string(result);
             }
         }
 
         static int ConvertToNumber(char num, int baze)
         {
-            int n = (int)num;
-            if (n >= 48 && n <= 57) n = n - '0';
-            if (n >= 65 && n <= 90) n = n - 'A' + 10;
-            if (n >= 97 && n <= 122) n = n - 'a' + 36;
-            if (n >= baze) throw new Exception("Число некорректно!");
-            return n;
+            int i = (int)num;
+            if (i >= 48 && i <= 57) i = i - '0';
+            if (i >= 65 && i <= 90) i = i - 'A' + 10;
+            if (i >= 97 && i <= 122) i = i - 'a' + 36;
+            if (i >= baze) 
+                throw new Exception("Число некорректно!");
+            return i;
         }
         public static char ConvertToSymbol(int mod)
         {
@@ -294,7 +313,7 @@ namespace InformatikaLab
                 return (char)('A' + mod - 10);
             if (mod >= 37 && mod <= 62)
                 return (char)('a' + mod - 36);
-            throw new ArgumentException("123");
+            throw new ArgumentException(" ");
         }
     }
     public static class F5
@@ -303,16 +322,15 @@ namespace InformatikaLab
 
         public static void function5()
         {
-
             Console.Write("Введите первое число: ");
-            string number1 = Console.ReadLine();
+            string num1 = Console.ReadLine();
             Console.Write("Введите второе число: ");
-            string number2 = Console.ReadLine();
+            string num2 = Console.ReadLine();
             Console.Write("Введите систему счисления в которой будет происходить вычитание (от 1 до 50): ");
             int baze = int.Parse(Console.ReadLine());
 
-            List<char> charList1 = number1.ToCharArray().ToList();
-            List<char> charList2 = number2.ToCharArray().ToList();
+            List<char> charList1 = num1.ToCharArray().ToList();
+            List<char> charList2 = num2.ToCharArray().ToList();
 
             List<int> numberList1 = charList1.Select(c => (int)alphabet.IndexOf(c)).ToList();
             List<int> numberList2 = charList2.Select(c => (int)alphabet.IndexOf(c)).ToList();
@@ -342,6 +360,7 @@ namespace InformatikaLab
                 s++;
             }
             Console.WriteLine("Ответ: " + result.ToString().TrimStart('0'));
+            Console.ReadKey();
         }
     }
 }
