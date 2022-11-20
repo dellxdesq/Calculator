@@ -3,8 +3,6 @@ using System.Text;
 
 namespace InformatikaLab
 {
-
-
     public static class Program
     {
         public static void Main()
@@ -36,7 +34,6 @@ namespace InformatikaLab
                     Console.Clear();
                     F5.function5();
                     break;
-
             }
         }
         public static void Menu()
@@ -135,6 +132,7 @@ namespace InformatikaLab
             Console.WriteLine("Ответ: " + FromDecToAny(toDec, toBaze));
         }
     }
+
     public static class F2
     {
 
@@ -164,6 +162,7 @@ namespace InformatikaLab
             Console.WriteLine("Ответ: " + output);
         }
     }
+
     public static class F3
     {
         public static void function3()
@@ -212,6 +211,7 @@ namespace InformatikaLab
 
         }
     }
+
     public static class F4
     {
         public static string function4()
@@ -341,9 +341,7 @@ namespace InformatikaLab
                 result.Append(alphabet[numberList1[s]]);
                 s++;
             }
-
             Console.WriteLine("Ответ: " + result.ToString().TrimStart('0'));
         }
     }
-
 }
